@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IbaracitySearchableBattleForm
 // @namespace    https://twitter.com/lv0_murabito
-// @version      0.8.0
+// @version      0.8.1
 // @description  騒乱イバラシティ(http://lisge.com/ib/)の戦闘画面にある入力フォームに絞り込み機能を追加する機能です。
 // @author       lv0_murabito
 // @match        http://lisge.com/ib/act_battle.php
@@ -17,7 +17,7 @@
   let elemetIndex;
 
   function updateList(e, formId, ul){
-    $(`#${formId}`).val(e.toElement.dataset.value);
+    $(`#${formId}`).val(e.target.dataset.value);
     const InputId = formId.replace(/dt_skill/,'inputform_');
     $(`#${InputId}`).val('').attr('placeholder',e.target.textContent);
     ul.empty();
@@ -44,7 +44,7 @@
     $(document).on('click', event => {
   　　if(
         !$(event.target).closest('.searchable_ul').length &&
-        !$(event.target).closest('.searchable_inpuit').length
+        !$(event.target).closest('.searchable_input').length
       ) {
     　　ul.empty();
   　  }
@@ -67,7 +67,7 @@
   function addInput(formIndex, inputIndex) {
     const placeholder = skillList.filter(item => item.value === $(`#dt_skill${elemetIndex}`).val())[0].label;
     $(`#dt_skill${elemetIndex}`).after(
-      `<input type="text" class="searchable_inpuit" id="inputform_${elemetIndex}" placeholder="${placeholder}"></input>`+
+      `<input type="text" class="searchable_input" id="inputform_${elemetIndex}" placeholder="${placeholder}"></input>`+
       `<ul id="ul_${elemetIndex}" class="searchable_ul"></ul>`
     );
      $(`#inputform_${elemetIndex}`).on('input focusin',event => { updateValue(event)});
@@ -99,8 +99,8 @@
     }
     $('body').append(
         '<style>'+
-        'input::placeholder {font-weight: bold; color: #220;font-size: 16px}'+
-        '.searchable_inpuit {position: absolute;top: 2px;left: 20px;width: 65%;height: 18px;background: #C6C6C3;z-index: 1;font-weight: bold;color: #220;font-size: 16px;}'+
+        '.searchable_input {position: absolute;top: 2px;left: 20px;width: 65%;height: 18px;background: #C6C6C3;z-index: 1;font-weight: bold;color: #220;font-size: 16px;}'+
+        '.searchable_input::placeholder {font-weight: bold; color: #220;font-size: 16px;opacity: 1;}'+
         '.searchable_ul {overflow-y: auto;max-height: 300px;position: absolute;top: 26px;left: 22px;width: 66%;color: #000;background: #C6C6C3;font-size: 14px;list-style-type: none;padding: 0;border: 0;margin: 0;z-index: 10}'+
         '.searchable_li {display: block;z-index: 100;cursor: pointer}'+
         '.searchable_li--select {font-weight :bold}'+
