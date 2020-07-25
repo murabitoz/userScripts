@@ -1,5 +1,5 @@
 # UserScripts
-[村人(ENo.307, @lv0_murabito)](https://twitter.com/lv0_murabito)の制作したイバラシティ向けのユーザースクリプト等のツールを置いてます。
+[村人(ENo.307, @lv0_murabito)](https://twitter.com/lv0_murabito)の制作したイバラシティ向けのユーザースクリプト等のツールを置くかもしれません。
 
 ### UserScriptって何？
 ユーザーが作成したスクリプト（プログラム）をブラウザで実行する為の仕組みのことです。そのスクリプト自体もユーザースクリプトと呼ばれます。
