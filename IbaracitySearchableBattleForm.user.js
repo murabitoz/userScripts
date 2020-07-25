@@ -8,8 +8,9 @@
 // @grant        none
 // ==/UserScript==
 
-(($) => {
+(() => {
   'use strict';
+  const $ = window.jQuery;
   const skillList = [];
   let filterdSkillList = [];
   const inputCount = 12;
@@ -109,4 +110,4 @@
     $('.BUTT2').on('click',function _handleClick(e){ changeTab(e); $(this).off("click", _handleClick)});
   };
   init();
-})(window.jQuery);
+})();
