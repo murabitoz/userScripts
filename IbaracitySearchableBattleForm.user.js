@@ -18,7 +18,7 @@
 
   function updateList(e, formId, ul){
     $(`#${formId} option`).attr("selected", false);
-    $(`#${formId}`).val(String(e.target.dataset.value));
+    $(`#${formId}`).val(e.target.dataset.value);
     $(`#${formId}`).trigger('change');
     const InputId = formId.replace(/dt_skill/,'inputform_');
     $(`#${InputId}`).val('').attr('placeholder',e.target.textContent);
