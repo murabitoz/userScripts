@@ -10,107 +10,119 @@
 
 (($) => {
   'use strict';
-  const skillList = [];
-  let filterdSkillList = [];
-  const inputCount = 12;
-  let elemetIndex;
+    const SearchableBattleForm = function() {
+      this.skillList = [];
+      this.filterdSkillList = [];
+      this.inputCount = 12;
+      this.elemetIndex;
 
-  function updateList(e, formId, ul){
-    $(`#${formId} option`).attr("selected", false);
-    $(`#${formId}`).val(e.target.dataset.value);
-    $(`#${formId}`).trigger('change');
-    const InputId = formId.replace(/dt_skill/,'inputform_');
-    $(`#${InputId}`).val('').attr('placeholder',e.target.textContent);
-    ul.empty();
-  }
+      this.skillListId　= function(){
+        return `dt_skill${this.elemetIndex}`;
+      };
+      this.filterdUl　= function(){
+        return `ul_${this.elemetIndex}`;
+      };
+      this.filterdInput = function(){
+        return `inputform_${this.elemetIndex}`;
+      };
+    };
 
-  function displayForm(id){
-    const ul = $('#'+id).next();
-    const formId = id.replace(/inputform_/,'dt_skill');
-    ul.empty();
-    filterdSkillList.map(item => {
-      let chcecked = $('#'+formId).val() === item.value ? true : false;
-      if(chcecked && item.label !== '－'){
-        ul.append(`<li><a class="searchable_li searchable_li--select">✓${item.label}</a></li>`);
-      } else {
-        ul.append(`<li><a class="searchable_li" data-value="${item.value}">${item.label}</a></li>`);
-      }
-    });
-    $('.searchable_li').on('click', event => {updateList(event, formId, ul)}).hover(function(){
-      $(this).css({ 'color': '#220','background':'#aaa'});
-    }, function() {
-      $(this).css({ 'color': '#220','background':'#c6c6c3'});
-    });
-    $('.searchable_li--select').css({'font-weight':'bold'});
-    $(document).on('click', event => {
-  　　if(
-        !$(event.target).closest('.searchable_ul').length &&
-        !$(event.target).closest('.searchable_input').length
-      ) {
-    　　ul.empty();
-  　  }
-　　});
-  }
-
-  function filter(value) {
-    if(value.length){
-      filterdSkillList = skillList.filter(skill => skill.label.match(value));
-    } else {
-      filterdSkillList = skillList;
+    SearchableBattleForm.prototype.updateList= function(e){
+      $(`#${this.skillListId()} option`).attr("selected", false);
+      $(`#${this.skillListId()}`).val(e.target.dataset.value).trigger('change');
+      $(`#${this.filterdInput()}`).val('').attr('placeholder',e.target.textContent);
+      $(`#${this.filterdUl()}`).empty();
     }
-  }
 
-  function updateValue(e) {
-    filter(e.target.value);
-    displayForm(e.target.id);
-  }
-
-  function addInput(formIndex, inputIndex) {
-    let placeholder;
-    skillList.some(item => {
-     if(item.value === $(`#dt_skill${elemetIndex}`).val()){
-       placeholder = item.label;
-       return true;
-     }
-    });
-    $(`#dt_skill${elemetIndex}`).after(
-      `<input type="text" class="searchable_input" id="inputform_${elemetIndex}" placeholder="${placeholder}"></input>`+
-      `<ul id="ul_${elemetIndex}" class="searchable_ul"></ul>`
-    );
-     $(`#inputform_${elemetIndex}`).on('input focusin',event => { updateValue(event)});
-  }
-
-  function setTab() {
-    const formIndex = $('.BUTT0').eq(0).attr('SET');
-    for(let i = 1; i <= inputCount; i++) {
-      elemetIndex = `${formIndex}-${i}`;
-      addInput(formIndex,i);
-      $(`#dt_skill${elemetIndex}`).css({'display':'none'});
-    }
-  }
-
-  function init() {
-    const select = $("#dt_skill1-1");
-    select.children('option').map((i, option) => {
-      skillList.push({
-        id:i,
-        value:option.value,
-        label:option.text,
-        checked: false,
+    SearchableBattleForm.prototype.displayForm = function(id){
+      const ul = $('#'+id).next();
+      const formId = id.replace(/inputform_/,'dt_skill');
+      ul.empty();
+     this.filterdSkillList.map(item => {
+        let chcecked = $('#'+formId).val() === item.value ? true : false;
+        if(chcecked && item.label !== '－'){
+          ul.append(`<li><a class="searchable_li searchable_li--select">✓${item.label}</a></li>`);
+        } else {
+          ul.append(`<li><a class="searchable_li" data-value="${item.value}">${item.label}</a></li>`);
+        }
       });
-    });
-    setTab();
-    $('body').append(
-        '<style>'+
-        '.searchable_input {position: absolute;top: 2px;left: 20px;width: 65%;height: 18px;background: #C6C6C3;z-index: 1;font-weight: bold;color: #220;font-size: 16px;}'+
-        '.searchable_input::placeholder {font-weight: bold; color: #220;font-size: 16px;opacity: 1;}'+
-        '.searchable_ul {overflow-y: auto;max-height: 300px;position: absolute;top: 26px;left: 22px;width: 66%;color: #000;background: #C6C6C3;font-size: 14px;list-style-type: none;padding: 0;border: 0;margin: 0;z-index: 10}'+
-        '.searchable_li {display: block;z-index: 100;cursor: pointer}'+
-        '.searchable_li--select {font-weight :bold}'+
-        '</style>'
-    );
-    $(".LITEM").css({'position':'relative'});
-    $('.BUTT2').on('click',function _handleClick(e){ setTab(e); $(this).off("click", _handleClick)});
-  };
-  init();
+      $('.searchable_li').on('click', event => { this.elemetIndex = formId.replace(/dt_skill/,''); this.updateList(event)}).hover(function(){
+        $(this).css({ 'color': '#220','background':'#aaa'});
+      }, function() {
+        $(this).css({ 'color': '#220','background':'#c6c6c3'});
+      });
+      $('.searchable_li--select').css({'font-weight':'bold'});
+      $(document).on('click', event => {
+    　　if(
+          !$(event.target).closest('.searchable_ul').length &&
+          !$(event.target).closest('.searchable_input').length
+        ) {
+      　　$(`#${this.filterdUl()}`).empty();
+    　  }
+  　　});
+    }
+
+    SearchableBattleForm.prototype.filter = function(value) {
+      if(value.length){
+          this.filterdSkillList = this.skillList.filter(skill => skill.label.match(value));
+      } else {
+         this.filterdSkillList = this.skillList;
+      }
+    }
+
+    SearchableBattleForm.prototype.updateValue = function(e) {
+      this.filter(e.target.value);
+      this.displayForm(e.target.id);
+    }
+
+    SearchableBattleForm.prototype.addInput = function() {
+      let placeholder;
+      this.skillList.some(item => {
+       if(item.value === $(`#${this.skillListId()}`).val()){
+         placeholder = item.label;
+         return true;
+       }
+      });
+      $(`#${this.skillListId()}`).after(
+        `<input type="text" class="searchable_input" id="${this.filterdInput()}" placeholder="${placeholder}"></input>`+
+        `<ul id="${this.filterdUl()}" class="searchable_ul"></ul>`
+      );
+       $(`#${this.filterdInput()}`).on('input focusin',event => { this.updateValue(event)});
+    }
+
+    SearchableBattleForm.prototype.setTab = function(){
+      const formIndex = $('.BUTT0').eq(0).attr('SET');
+      for(let i = 1; i <= this.inputCount; i++) {
+        this.elemetIndex = `${formIndex}-${i}`;
+        this.addInput();
+        $(`#${this.skillListId()}`).css({'display':'none'});
+      }
+    }
+
+    SearchableBattleForm.prototype.init = function() {
+      const select = $("#dt_skill1-1");
+      select.children('option').map((index, option) => {
+         this.skillList.push({
+          id: index,
+          value:option.value,
+          label:option.text,
+          checked: false,
+        });
+      });
+      this.setTab();
+    }
+
+  const searchableBattleForm = new SearchableBattleForm();
+  searchableBattleForm.init();
+  $('body').append(
+          '<style>'+
+          '.searchable_input {position: absolute;top: 2px;left: 20px;width: 65%;height: 18px;background: #C6C6C3;z-index: 1;font-weight: bold;color: #220;font-size: 16px;}'+
+          '.searchable_input::placeholder {font-weight: bold; color: #220;font-size: 16px;opacity: 1;}'+
+          '.searchable_ul {overflow-y: auto;max-height: 300px;position: absolute;top: 26px;left: 22px;width: 66%;color: #000;background: #C6C6C3;font-size: 14px;list-style-type: none;padding: 0;border: 0;margin: 0;z-index: 10}'+
+          '.searchable_li {display: block;z-index: 100;cursor: pointer}'+
+          '.searchable_li--select {font-weight :bold}'+
+          '</style>'
+  );
+  $(".LITEM").css({'position':'relative'});
+  $('.BUTT2').on('click',function _handleClick(e){ searchableBattleForm.setTab(e); $(this).off("click", _handleClick)});
 })(jQuery);
