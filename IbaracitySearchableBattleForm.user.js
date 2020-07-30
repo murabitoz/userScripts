@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IbaracitySearchableBattleForm
 // @namespace    https://twitter.com/lv0_murabito
-// @version      0.8.4
+// @version      0.8.5
 // @description  騒乱イバラシティ(http://lisge.com/ib/)の戦闘画面にある入力フォームに絞り込み機能を追加する機能です。
 // @author       lv0_murabito
 // @match        http://lisge.com/ib/act_battle.php*
@@ -28,7 +28,7 @@
     $(`#${this.skillListId()} option`).attr("selected", false);
     $(`#${this.skillListId()}`).val(e.target.dataset.value).trigger('change');
     $(`#${this.filterdInput()}`).val('').attr('placeholder', e.target.textContent);
-    $(`#${this.filterdUl()}`).empty();
+    $(`.searchable_ul`).empty();
   }
   SearchableBattleForm.prototype.displayForm = function (id) {
     const ul = $('#' + id).next();
@@ -61,7 +61,7 @@
     });
     $(document).on('click', event => {
       if (!$(event.target).closest('.searchable_ul').length && !$(event.target).closest('.searchable_input').length) {
-        $(`#${this.filterdUl()}`).empty();
+        $(`.searchable_ul`).empty();
       }
     });
   }
@@ -84,7 +84,8 @@
         return true;
       }
     });
-    $(`#${this.skillListId()}`).after(`<input type="text" class="searchable_input" id="${this.filterdInput()}" placeholder="${placeholder}"></input>` + `<ul id="${this.filterdUl()}" class="searchable_ul"></ul>`);
+    $(`#${this.skillListId()}`).after(`<input type="text" class="searchable_input" id="${this.filterdInput()}" placeholder="${placeholder}"></input>` +
+      `<ul id="${this.filterdUl()}" class="searchable_ul"></ul>`);
     $(`#${this.filterdInput()}`).on('input focusin', event => {
       this.updateValue(event)
     });
