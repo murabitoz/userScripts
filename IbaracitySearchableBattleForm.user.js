@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IbaracitySearchableBattleForm
 // @namespace    https://twitter.com/lv0_murabito
-// @version      0.8.5
+// @version      0.8.6
 // @description  騒乱イバラシティ(http://lisge.com/ib/)の戦闘画面にある入力フォームに絞り込み機能を追加する機能です。
 // @author       lv0_murabito
 // @match        http://lisge.com/ib/act_battle.php*
@@ -95,9 +95,6 @@
     for (let i = 1; i <= this.inputCount; i++) {
       this.elemetIndex = `${formIndex}-${i}`;
       this.addInput();
-      $(`#${this.skillListId()}`).css({
-        'display': 'none'
-      });
     }
   }
   SearchableBattleForm.prototype.init = function () {
@@ -129,5 +126,14 @@
       searchableBattleForm.setTab(e);
       $(this).off("click", _handleClick)
     });
+    if(!$('#SkillTooltip').length){
+      $('.searchable_input').hover(function (e) {
+        let offsetTop = e.pageY;
+        let offsetLeft = e.pageX;
+        $('#SkillTooltip').html($(this).prev('select').attr('data-tooltip')).css({'top': offsetTop, 'left': offsetLeft,'z-index': 1 }).show();
+      }, function () {
+        $('#SkillTooltip').empty().hide();
+      });
+    }
   }
 })(jQuery);
