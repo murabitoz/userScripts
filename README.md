@@ -33,5 +33,11 @@
 ![はうとぅーゆーず](https://github.com/murabitoz/userScripts/blob/master/pic/howToUse.png "使い方")
 
 スキル使用設定のフォームをクリックすると通常通りセレクトボックスのように機能します。  
-スキル使用設定のフォームにテキスト入力が出来、入力されたテキストに応じて選択肢が絞り込まれます。  
-リストから項目を選択すると、選択が画面に反映されます。
+スキル使用設定のフォームにテキスト入力が出来るようになり、入力テキストに応じて選択肢が絞り込まれます。  
+リストから項目を選択すると、選択が画面に反映されます。  
+（v0.8.8~ pejutaさんの公開されている[IbaraBSSkillTooltip](https://github.com/pejuta/IbaraUtilities/blob/master/UserScripts/IbaraBSSkillTooltip.user.js)との併用可能になりました。)
+
+
+### SpecialThanks
+#### 偉大なる先駆者様＆Contributor様
+- [pejuta(ENo.411, @11powder)](https://twitter.com/11powder)さん　[公開されているイバラシティ関連のツール](https://github.com/pejuta/IbaraUtilities)
