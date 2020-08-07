@@ -97,7 +97,6 @@
     });
   }
   SearchableBattleForm.prototype.setTab = function () {
-    const formIndex = $('.BUTT0').eq(0).attr('SET');
      for (let i = 1; i <= this.formCount; i++) {
        for (let j = 1; j <= this.inputCount; j++) {
          this.elemetIndex = `${i}-${j}`;
