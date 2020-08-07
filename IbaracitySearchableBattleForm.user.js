@@ -141,6 +141,6 @@
         if (++waitingSkillTooltipSecs >= 30 || window.skillTooltip) {
             clearInterval(waitSkillTooltipId);
         }
-    }, 1000)
+    }, 1000);
   }
 })(jQuery);
