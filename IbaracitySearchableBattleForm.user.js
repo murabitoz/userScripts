@@ -37,7 +37,7 @@
     this.filterdSkillList.map(item => {
       let chcecked = $('#' + formId).val() === item.value ? true : false;
       if (chcecked && item.label !== '－') {
-        ul.append(`<li><a class="searchable_li searchable_li--select">${item.label}</a></li>`);
+        ul.append(`<li><a class="searchable_li searchable_li--select" data-value="${item.value}">${item.label}</a></li>`);
       } else {
         ul.append(`<li><a class="searchable_li" data-value="${item.value}">${item.label}</a></li>`);
       }
