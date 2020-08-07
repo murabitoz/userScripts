@@ -27,7 +27,7 @@
   SearchableBattleForm.prototype.updateList = function (e) {
     $(`#${this.skillListId()} option`).attr("selected", false);
     $(`#${this.skillListId()}`).val(e.target.dataset.value).trigger('change');
-    $(`#${this.filterdInput()}`).val('').attr('placeholder', e.target.textContent);
+    $(`#${this.filterdInput()}`).val(e.target.textContent).attr('placeholder', e.target.textContent);
     $(`.searchable_ul`).empty();
   }
   SearchableBattleForm.prototype.displayForm = function (id) {
@@ -86,7 +86,12 @@
     });
     $(`#${this.skillListId()}`).after(`<input type="text" class="searchable_input" id="${this.filterdInput()}" placeholder="${placeholder}"></input>` +
       `<ul id="${this.filterdUl()}" class="searchable_ul"></ul>`);
-    $(`#${this.filterdInput()}`).on('input focusin', event => {
+    $(`#${this.filterdInput()}`).val(placeholder).on('focusin', event => {
+      event.target.value = "";
+    }).on('focusout', event => {
+      event.target.value = event.target.placeholder;
+      $(event.target).trigger('change');
+    }).on('input focusin', event => {
       this.updateValue(event)
     });
   }
@@ -126,14 +131,16 @@
       searchableBattleForm.setTab(e);
       $(this).off("click", _handleClick)
     });
-    if(!$('#SkillTooltip').length){
-      $('.searchable_input').hover(function (e) {
-        let offsetTop = e.pageY;
-        let offsetLeft = e.pageX;
-        $('#SkillTooltip').html($(this).prev('select').attr('data-tooltip')).css({'top': offsetTop, 'left': offsetLeft,'z-index': 1 }).show();
-      }, function () {
-        $('#SkillTooltip').empty().hide();
-      });
-    }
+
+    let waitingSkillTooltipSecs = 0;
+    const waitSkillTooltipId = setInterval(() => {
+        if (window.skillTooltip) {
+            window.skillTooltip.bind("skill", ".searchable_input");
+            window.skillTooltip.bind("skill", ".searchable_ul", ".searchable_li");
+        }
+        if (++waitingSkillTooltipSecs >= 30 || window.skillTooltip) {
+            clearInterval(waitSkillTooltipId);
+        }
+    }, 1000)
   }
 })(jQuery);
