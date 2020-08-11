@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IbaracitySearchableBattleForm
 // @namespace    https://twitter.com/lv0_murabito
-// @version      0.8.8
+// @version      0.8.9
 // @description  騒乱イバラシティ(http://lisge.com/ib/)の戦闘画面にある入力フォームに絞り込み機能を追加する機能です。
 // @author       lv0_murabito
 // @match        http://lisge.com/ib/act_battle.php*
@@ -79,15 +79,22 @@
   }
   SearchableBattleForm.prototype.addInput = function () {
     let placeholder;
+    const $skillList = $(`#${this.skillListId()}`);
     this.skillList.some(item => {
-      if (item.value === $(`#${this.skillListId()}`).val()) {
+      if (item.value === $skillList.val()) {
         placeholder = item.label;
         return true;
       }
     });
-    $(`#${this.skillListId()}`).after(`<input type="text" class="searchable_input" id="${this.filterdInput()}" placeholder="${placeholder}"></input>` +
+    $skillList.after(`<input type="text" class="searchable_input" id="${this.filterdInput()}" placeholder="${placeholder}"></input>` +
       `<ul id="${this.filterdUl()}" class="searchable_ul"></ul>`);
-    $(`#${this.filterdInput()}`).val(placeholder).on('focusin', event => {
+
+    const $filteredInput = $(`#${this.filterdInput()}`);
+    $skillList.on('change', event => {
+        $filteredInput[0].value = $filteredInput[0].placeholder = $skillList.children('option:selected').text();
+    });
+    $filteredInput[0].value = placeholder;
+    $filteredInput.on('focusin', event => {
       event.target.value = "";
     }).on('focusout', event => {
       event.target.value = event.target.placeholder;
